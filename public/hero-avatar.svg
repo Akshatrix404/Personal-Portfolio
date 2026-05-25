@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7400b8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#64dfdf" stop-opacity="0.1"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="200" cy="420" rx="120" ry="30" fill="#64dfdf" opacity="0.15"/>
+  <circle cx="200" cy="180" r="110" fill="url(#bg)" stroke="#64dfdf" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="200" cy="160" r="70" fill="#1a003d"/>
+  <circle cx="200" cy="160" r="55" fill="#6930c3" opacity="0.5"/>
+  <!-- face -->
+  <circle cx="178" cy="152" r="8" fill="#64dfdf" opacity="0.9"/>
+  <circle cx="222" cy="152" r="8" fill="#64dfdf" opacity="0.9"/>
+  <path d="M 178 180 Q 200 198 222 180" stroke="#80ffdb" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- body -->
+  <rect x="140" y="260" width="120" height="150" rx="20" fill="#130030" stroke="#5e60ce" stroke-width="1"/>
+  <text x="200" y="345" font-family="monospace" font-size="16" fill="#64dfdf" text-anchor="middle" opacity="0.7">{'</>'}</text>
+</svg>
