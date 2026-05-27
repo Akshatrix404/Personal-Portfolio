@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "ship": "git add . && git commit -m 'update' && npm run deploy",
     "build": "react-scripts build",
+    "postbuild": "node ./scripts/portfolio-landing.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
