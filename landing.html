@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Akshat Khandelwal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f9ff;
+    --surface: #ffffff;
+    --border:  rgba(15,23,42,0.08);
+    --text:    #0f172a;
+    --muted:   rgba(15,23,42,0.55);
+    --accent:  #2563eb;
+    --aqua:    #0ea5e9;
+    --gold:    #f59e0b;
+    --r:       14px;
+  }
+
+  html, body {
+    height: 100%;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise grain overlay ── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03' fill='%230f172a'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.55;
+  }
+
+  /* ── Ambient glow ── */
+  body::after {
+    content: "";
+    position: fixed;
+    top: -30vh; left: 50%;
+    transform: translateX(-50%);
+    width: 80vw; height: 80vw;
+    background: radial-gradient(ellipse, rgba(124,106,247,0.13) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Layout ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    gap: 0;
+  }
+
+  /* ── Avatar ── */
+  .avatar-ring {
+    position: relative;
+    width: 108px; height: 108px;
+    flex-shrink: 0;
+    animation: fadeUp 0.7s ease both;
+  }
+  .avatar-ring::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--accent), var(--aqua), var(--gold), var(--accent));
+    animation: spin 8s linear infinite;
+    z-index: 0;
+  }
+  .avatar-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: #f8fafc;
+    border: 3px solid rgba(37,99,235,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    overflow: hidden;
+  }
+  .avatar-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* ── Name block ── */
+  .name-block {
+    text-align: center;
+    margin-top: 22px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #f0eeff 0%, var(--accent) 55%, var(--aqua) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tagline {
+    margin-top: 10px;
+    font-size: 0.82rem;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tagline span {
+    color: var(--aqua);
+    opacity: 0.85;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 48px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 28px 0;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  /* ── Links grid ── */
+  .links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    width: auto;
+    max-width: 100%;
+    animation: fadeUp 0.7s 0.25s ease both;
+    margin-top: 24px;
+  }
+
+  .card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 16px;
+    min-width: 52px;
+    min-height: 52px;
+    border-radius: 15px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.22s, border-color 0.22s, transform 0.18s, box-shadow 0.22s;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.22s;
+    border-radius: inherit;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(37,99,235,0.22);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+  .card:active { transform: translateY(0); }
+
+  /* Card accent colours via CSS custom props */
+  .card:hover::before { opacity: 1; }
+
+  .card.portfolio {
+    width: auto;
+    min-width: auto;
+    padding: 15px 24px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.16), rgba(14,165,233,0.12));
+    border-color: rgba(37,99,235,0.25);
+  }
+  .card.portfolio:hover {
+    background: linear-gradient(135deg, rgba(37,99,235,0.24), rgba(14,165,233,0.18));
+    border-color: rgba(37,99,235,0.45);
+    box-shadow: 0 14px 30px rgba(37,99,235,0.12);
+  }
+
+  .card.dashboards {
+    width: auto;
+    min-width: auto;
+    padding: 15px 24px;
+    margin-top: 12px;
+    background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(245,158,11,0.10));
+    border-color: rgba(14,165,233,0.25);
+  }
+  .card.dashboards:hover {
+    background: linear-gradient(135deg, rgba(14,165,233,0.24), rgba(245,158,11,0.16));
+    border-color: rgba(14,165,233,0.45);
+    box-shadow: 0 14px 30px rgba(14,165,233,0.14);
+  }
+  .card.dashboards .icon { background: rgba(14,165,233,0.22); }
+  .card.dashboards .arrow {
+    margin-left: 8px;
+    color: var(--aqua);
+    opacity: 0.75;
+    font-size: 1rem;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .card.dashboards:hover .arrow { transform: translateX(3px); opacity: 1; }
+
+  .card.github:hover  { border-color: rgba(255,255,255,0.25); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+  .card.linkedin:hover{ border-color: rgba(255,255,255,0.25);  box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+  .card.email:hover   { border-color: rgba(255,255,255,0.25); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+  .card.whatsapp:hover{ border-color: rgba(255,255,255,0.25);  box-shadow: 0 12px 32px rgba(0,0,0,0.5);; }
+
+  /* Icon circle */
+  .icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.05rem;
+  }
+  .icon svg { width: 18px; height: 18px; }
+  .portfolio .icon { background: rgba(124,106,247,0.22); }
+  .github   .icon  { background: rgba(62, 60, 60, 0.08); }
+  .linkedin .icon  { background: rgba(10,102,194,0.18); }
+  .email    .icon  { background: rgba(232,201,122,0.14); }
+  .whatsapp .icon  { background: rgba(37,211,102,0.14); }
+
+  .card-text { display: flex; flex-direction: column; gap: 1px; }
+  .card-label { font-size: 0.82rem; color: var(--muted); font-weight: 300; letter-spacing: 0.04em; }
+  .card-value { font-size: 0.92rem; font-weight: 500; }
+
+  /* Arrow on portfolio */
+  .card.portfolio .arrow {
+    margin-left: 8px;
+    color: var(--accent);
+    opacity: 0.75;
+    font-size: 1rem;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .card.portfolio:hover .arrow { transform: translateX(3px); opacity: 1; }
+
+  /* ── Status badge ── */
+  .status {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 99px;
+    background: rgba(37,99,235,0.08);
+    border: 1px solid rgba(37,99,235,0.16);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    animation: fadeUp 0.7s 0.35s ease both;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--aqua);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── Footer note ── */
+  .footer-note {
+    margin-top: 36px;
+    font-size: 0.7rem;
+    color: rgba(15,23,42,0.45);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  /* ── Mobile tweaks ── */
+  @media (max-width: 400px) {
+    .links { justify-content: center; gap: 12px; }
+    .card { min-width: 50px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- Avatar -->
+  <div class="avatar-ring">
+    <div class="avatar-inner">
+      <img src="/avatar.jpg" alt="Akshat Khandelwal" />
+    </div>
+  </div>
+
+  <!-- Name -->
+  <div class="name-block">
+    <h1 class="name">Akshat Khandelwal</h1>
+    <p class="tagline">AI / ML · Data Analyst · Android · Full Stack· <span>Open to opportunities</span></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Social icons -->
+  <div class="links">
+    <a class="card github"
+       href="https://github.com/Akshatrix404"
+       target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="color:#0f172a;">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+      </div>
+    </a>
+
+    <a class="card linkedin"
+       href="https://www.linkedin.com/in/akshatkhndelwal01/"
+       target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="color:#0f172a">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </div>
+    </a>
+
+    <a class="card email"
+       href="mailto:ak.professional47@gmail.com" aria-label="Email"
+       target="_blank" rel="noopener noreferrer">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#0f172a">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a class="card whatsapp"
+       href="https://wa.me/916378401213"
+       target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="color:#0f172a">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 2.118.554 4.103 1.523 5.83L.057 23.97l6.304-1.654A11.946 11.946 0 0 0 12 24c6.626 0 12-5.373 12-12S18.626 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.005-1.371l-.358-.214-3.744.982 1-3.645-.234-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.579 6.579 2.182 12 2.182c5.42 0 9.818 4.397 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/>
+        </svg>
+      </div>
+    </a>
+  </div>
+
+  <a class="card portfolio"
+     href="/portfolio/"
+     rel="noopener noreferrer"
+     aria-label="Portfolio Website">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#ffffff">
+        <rect x="2" y="3" width="20" height="14" rx="2" padding="10px"/><path d="M8 21h8M12 17v4"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <span class="card-label">Visit</span>
+      <span class="card-value" style="color:#2a644b" padding="10px">Portfolio Website →</span>
+    </div>
+  </a>
+
+  <a class="card dashboards"
+     href="/dashboards/"
+     rel="noopener noreferrer"
+     aria-label="Dashboard Portfolio">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#0ea5e9">
+        <path d="M3 3v18h18"/>
+        <rect x="7" y="12" width="3" height="6" fill="currentColor" stroke="none"/>
+        <rect x="12" y="8" width="3" height="10" fill="currentColor" stroke="none"/>
+        <rect x="17" y="5" width="3" height="13" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <span class="card-label">Visit</span>
+      <span class="card-value" style="color:#0369a1" padding="10px">Data Dashboards →</span>
+    </div>
+  </a>
+
+  <!-- Status -->
+  <div class="status">
+    <div class="status-dot"></div>
+    Available for internships &amp; full-time
+  </div>
+
+  <p class="footer-note">VIT Vellore · CS Engineering · 2025</p>
+
+</main>
+</body>
+</html>
